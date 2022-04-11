@@ -1,0 +1,13 @@
+<%- include('includes/head') %>
+
+    <section class="container">
+        <form action="/" method="post">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>"> <!-- Token de segurança de formulário -->
+            <h1> <%- titulo %> </h1> <!-- Exemplo de variável predefinida no HomeController -->
+            <label>Cliente</label>
+            <input type="text" name="cliente">
+            <button>Submit</button>
+        </form>
+    </section>
+
+<%- include('includes/footer') %>
