@@ -71,7 +71,7 @@ app.set('view engine', 'ejs');
 // Aplica um token para ser verificado e consumido pela API nos formulários
 app.use(csrf());
 
-// Nossos próprios middlewares
+// Middleware global
 app.use(middlewareGlobal);
 
 // Middleware para conferir o token CSRF
