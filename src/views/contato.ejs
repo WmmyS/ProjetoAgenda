@@ -11,7 +11,11 @@
 
             <%- include('includes/messages')  %> 
 
-            <form class= "mt-5" action="/contato/register" method="post">
+            <% if(contato._id) { %> 
+            <form class= "mt-5" action="/contato/edit/<%= contato._id %> " method="POST">
+            <% } else{ %> 
+            <form class= "mt-5" action="/contato/register" method="POST">
+            <% } %> 
                 <input type="hidden" name="_csrf" value=<%= csrfToken %>>
 
                 <div class="form-group my-4">
@@ -31,7 +35,11 @@
                     <input value="<%= contato.telefone %>" type="tel" class="form-control" name="telefone">
                 </div>
               
+                <% if(contato._id) { %> 
+                <button type="submit" class="btn btn-primary">Editar</button>
+                <% } else { %> 
                 <button type="submit" class="btn btn-primary">Salvar</button>
+                <% } %> 
             </form>
 
         </div>
