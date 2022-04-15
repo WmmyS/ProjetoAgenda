@@ -27,9 +27,6 @@ module.exports = {
                     presets:['@babel/env']
                 }
             }
-        },{
-            test: /\.css$/,
-            use: ['style-loader', 'css-loader']
         }]
     },
     // mapea o arquivo de erro do código

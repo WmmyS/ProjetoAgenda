@@ -17,7 +17,7 @@
                 <h4>Faça seu cadastro</h4>
                 <p>Se você não tem sua conta, preencha abaixo:</p>
           
-                <form class= "mt-5" action="/login/register" method="post">
+                <form class= "mt-5 form-cadastro" action="/login/register" method="post">
                     <input type="hidden" name="_csrf" value=<%= csrfToken %>>
                     <div class="form-group my-4">
                       <label>Seu e-mail</label>
@@ -37,7 +37,7 @@
             <h4>Faça seu login</h4>
             <p>Se você já tem uma conta, faça login abaixo:</p>
           
-            <form class= "mt-5" action="/login/login" method="post">
+            <form class= "mt-5 form-login" action="/login/login" method="post">
                 <input type="hidden" name="_csrf" value=<%= csrfToken %>>
                 <div class="form-group my-4">
                   <label>Seu e-mail</label>
