@@ -1,6 +1,214 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./frontend/modules/Alerta.js":
+/*!************************************!*\
+  !*** ./frontend/modules/Alerta.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Alerta)
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+var Alerta = /*#__PURE__*/function () {
+  function Alerta(classe, mensagem) {
+    _classCallCheck(this, Alerta);
+
+    this.classe = classe;
+    this.mensagem = mensagem;
+  }
+
+  _createClass(Alerta, [{
+    key: "inserirAlerta",
+    value: function inserirAlerta(errors) {
+      var _this = this;
+
+      if (!this.classe || !this.mensagem) return;
+      var div = document.querySelector(this.classe);
+      this.inserirDivAlerta(div); // Insere mensagens de erro em array caso o erro ainda não tenha sido inserido
+
+      var finded = errors.map(function (data) {
+        return data === _this.mensagem;
+      });
+      if (!finded.length > 0) errors.push(this.mensagem);
+    } // Responsável por inserir as divs com mensagens de alerta
+
+  }, {
+    key: "inserirDivAlerta",
+    value: function inserirDivAlerta(div) {
+      var idName = "".concat(this.classe, "-alert").replace('.', '');
+      var d = document.getElementById(idName);
+
+      if (!d) {
+        var divAlerta = document.createElement('div');
+        var text = document.createTextNode(this.mensagem);
+        divAlerta.classList.add('alert');
+        divAlerta.classList.add('alert-danger');
+        divAlerta.classList.add('my-2');
+        divAlerta.setAttribute('id', idName);
+        divAlerta.appendChild(text);
+        div.appendChild(divAlerta);
+      }
+
+      ;
+    } // Responsável por remover a div com mensagens de alerta
+
+  }, {
+    key: "removerAlerta",
+    value: function removerAlerta(errors) {
+      var _this2 = this;
+
+      var idName = "".concat(this.classe, "-alert").replace('.', '');
+      var div = document.querySelector(this.classe);
+      var divRemover = document.getElementById(idName);
+      if (divRemover) div.removeChild(divRemover); // Remove a mensagem de erro do array
+
+      errors.filter(function (data) {
+        return errors.pop(data === _this2.mensagem);
+      });
+    }
+  }]);
+
+  return Alerta;
+}();
+
+
+
+/***/ }),
+
+/***/ "./frontend/modules/Contato.js":
+/*!*************************************!*\
+  !*** ./frontend/modules/Contato.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Contato)
+/* harmony export */ });
+/* harmony import */ var validator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! validator */ "./node_modules/validator/index.js");
+/* harmony import */ var validator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(validator__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _Alerta__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Alerta */ "./frontend/modules/Alerta.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+
+
+
+var Contato = /*#__PURE__*/function () {
+  function Contato(formClass) {
+    _classCallCheck(this, Contato);
+
+    this.form = document.querySelector(formClass);
+    this.errors = [];
+  }
+
+  _createClass(Contato, [{
+    key: "init",
+    value: function init() {
+      this.events();
+    }
+  }, {
+    key: "events",
+    value: function events() {
+      var _this = this;
+
+      this.validateInputs();
+      if (!this.form) return;
+      this.form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        _this.validate(event);
+      });
+    }
+  }, {
+    key: "validate",
+    value: function validate(e) {
+      var element = e.target;
+      var emailContato = element.querySelector('input[name="email"]');
+      var telefoneContato = element.querySelector('input[name="telefone"]');
+      if (!this.errors.length > 0) element.submit();
+    }
+  }, {
+    key: "validateInputs",
+    value: function validateInputs() {
+      var _this2 = this;
+
+      // Identificar inputs
+      var nome = document.querySelector('.input-nome');
+      var sobrenome = document.querySelector('.input-sobrenome');
+      var telefone = document.querySelector('.input-telefone');
+      var email = document.querySelector('.input-email');
+      nome.addEventListener('keydown', function (event) {
+        //Validar nome
+        _this2.validarNome(nome);
+      });
+      sobrenome.addEventListener('keydown', function (event) {
+        //validar sobrenome
+        _this2.validarSobrenome(sobrenome);
+      });
+      telefone.addEventListener('keydown', function (event) {
+        // Validar telefone
+        _this2.validarTelefone(telefone);
+      });
+      email.addEventListener('focusout', function (event) {
+        // Validar email
+        _this2.validarEmail(email);
+
+        console.log(_this2.errors);
+      });
+    }
+  }, {
+    key: "validarNome",
+    value: function validarNome(nome) {
+      if (!nome) return;
+      console.log(nome.value);
+    }
+  }, {
+    key: "validarSobrenome",
+    value: function validarSobrenome(sobrenome) {
+      if (!sobrenome) return;
+      console.log(sobrenome.value);
+    }
+  }, {
+    key: "validarTelefone",
+    value: function validarTelefone(telefone) {
+      if (!telefone) return;
+      console.log(telefone.value);
+    }
+  }, {
+    key: "validarEmail",
+    value: function validarEmail(email) {
+      if (!email) return;
+      var alerta = new _Alerta__WEBPACK_IMPORTED_MODULE_0__["default"]('.form-input-email', 'Email inválido');
+
+      if (!validator__WEBPACK_IMPORTED_MODULE_1___default().isEmail(email.value)) {
+        alerta.inserirAlerta(this.errors);
+      } else {
+        alerta.removerAlerta(this.errors);
+      }
+    }
+  }]);
+
+  return Contato;
+}();
+
+
+
+/***/ }),
+
 /***/ "./frontend/modules/Login.js":
 /*!***********************************!*\
   !*** ./frontend/modules/Login.js ***!
@@ -65,7 +273,6 @@ var Login = /*#__PURE__*/function () {
       }
 
       if (!error) element.submit();
-      console.log(emailInput.value, passwordInput.value);
     }
   }]);
 
@@ -26554,14 +26761,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! regenerator-runtime/runtime */ "./node_modules/regenerator-runtime/runtime.js");
 /* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _modules_Login__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/Login */ "./frontend/modules/Login.js");
+/* harmony import */ var _modules_Contato__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/Contato */ "./frontend/modules/Contato.js");
 
  // import './assets/css/style.css';
 
 
+
 var login = new _modules_Login__WEBPACK_IMPORTED_MODULE_2__["default"]('.form-login');
 var cadastro = new _modules_Login__WEBPACK_IMPORTED_MODULE_2__["default"]('.form-cadastro');
+var contato = new _modules_Contato__WEBPACK_IMPORTED_MODULE_3__["default"]('.form-contato');
 login.init();
 cadastro.init();
+contato.init();
 })();
 
 /******/ })()
