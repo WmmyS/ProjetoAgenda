@@ -166,8 +166,6 @@ var Contato = /*#__PURE__*/function () {
       email.addEventListener('focusout', function (event) {
         // Validar email
         _this2.validarEmail(email);
-
-        console.log(_this2.errors);
       });
     }
   }, {
