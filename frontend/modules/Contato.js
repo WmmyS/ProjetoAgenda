@@ -35,21 +35,25 @@ export default class Contato {
         const telefone = document.querySelector('.input-telefone');
         const email = document.querySelector('.input-email');
 
-        nome.addEventListener('keydown', event => {
+        if(!nome) return;
+        nome.addEventListener('focusout', event => {
             //Validar nome
             this.validarNome(nome);
         })
 
-        sobrenome.addEventListener('keydown', event => {
+        if(!sobrenome) return;
+        sobrenome.addEventListener('focusout', event => {
             //validar sobrenome
             this.validarSobrenome(sobrenome);
         })
 
-        telefone.addEventListener('keydown', event => {
+        if(!telefone) return;
+        telefone.addEventListener('focusout', event => {
             // Validar telefone
             this.validarTelefone(telefone);
         })
 
+        if(!email) return;
         email.addEventListener('focusout', event => {
             // Validar email
             this.validarEmail(email);
@@ -74,7 +78,7 @@ export default class Contato {
     validarEmail(email) {
         if(!email) return;
         const alerta = new Alerta('.form-input-email','Email inválido');
-
+        
         if(!validator.isEmail(email.value)) {
             alerta.inserirAlerta(this.errors);
         } else {

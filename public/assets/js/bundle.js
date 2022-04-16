@@ -151,18 +151,22 @@ var Contato = /*#__PURE__*/function () {
       var sobrenome = document.querySelector('.input-sobrenome');
       var telefone = document.querySelector('.input-telefone');
       var email = document.querySelector('.input-email');
-      nome.addEventListener('keydown', function (event) {
+      if (!nome) return;
+      nome.addEventListener('focusout', function (event) {
         //Validar nome
         _this2.validarNome(nome);
       });
-      sobrenome.addEventListener('keydown', function (event) {
+      if (!sobrenome) return;
+      sobrenome.addEventListener('focusout', function (event) {
         //validar sobrenome
         _this2.validarSobrenome(sobrenome);
       });
-      telefone.addEventListener('keydown', function (event) {
+      if (!telefone) return;
+      telefone.addEventListener('focusout', function (event) {
         // Validar telefone
         _this2.validarTelefone(telefone);
       });
+      if (!email) return;
       email.addEventListener('focusout', function (event) {
         // Validar email
         _this2.validarEmail(email);

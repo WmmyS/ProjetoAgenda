@@ -24,19 +24,42 @@ Contato.buscaPorId = async function(id) {
 };
 
 Contato.prototype.register = async function() {
-    this.valida();
+    await this.valida(null);
     if (this.errors.length > 0) return;
     this.contato = await ContatoModel.create(this.body);
 };
 
-Contato.prototype.valida = function() {
+Contato.prototype.valida = async function(id) {
     this.cleanUp();
     // validação
-    if (this.body.email && !validator.isEmail(this.body.email)) this.errors.push('E-mail inválido');
+    await this.verificarNomeCompleto(this.body.nome, this.body.sobrenome, (id !== null)? id: null);
     if (!this.body.nome) this.errors.push('Nome é um campo obrigatório.')
+
+    await this.verificarEmail(this.body.email, (id !== null)? id: null );
+    if (this.body.email && !validator.isEmail(this.body.email)) this.errors.push('E-mail inválido');
+
+    await this.verificarTelefone(this.body.telefone, (id !== null)? id: null);
     if (!this.body.email && !this.body.telefone) {
         this.errors.push('Pelo menos um contato precisa ser enviado: e-mail ou telefone.');
     }
+}
+
+Contato.prototype.verificarEmail = async function(email, id) {
+    if (id !== null) return;
+    const exists = await ContatoModel.findOne({ email : email }).exec();    
+    if (exists !== null) this.errors.push('Existe um contato com esse E-mail já cadastrado');
+}
+
+Contato.prototype.verificarTelefone = async function(telefone, id) {
+    if (id !== null) return;
+    const exists = await ContatoModel.findOne({ telefone : telefone }).exec();
+    if (exists !== null) this.errors.push('Existe um contato com esse telefone já cadastrado');
+}
+
+Contato.prototype.verificarNomeCompleto = async function(nome, sobrenome, id) {
+    if (id !== null) return;
+    const exists = await ContatoModel.findOne({ nome : nome, sobrenome : sobrenome }).exec();
+    if (exists !== null) this.errors.push('Existe um contato com esse nome e sobrenome');
 }
 
 Contato.prototype.cleanUp = function() {
@@ -57,7 +80,7 @@ Contato.prototype.cleanUp = function() {
 
 Contato.prototype.edit = async function(id) {
     if(typeof id !== 'string') return;
-    this.valida();
+    this.valida(id);
     if(this.errors.lenght > 0) return;
     this.contato = await ContatoModel.findByIdAndUpdate(id, this.body, { new: true });
 }
