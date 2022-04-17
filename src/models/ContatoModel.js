@@ -38,6 +38,7 @@ Contato.prototype.valida = async function(id) {
     await this.verificarEmail(this.body.email, (id !== null)? id: null );
     if (this.body.email && !validator.isEmail(this.body.email)) this.errors.push('E-mail inválido');
 
+    // this.body.telefone = this.body.telefone.replace(/()-/g,'').split();
     await this.verificarTelefone(this.body.telefone, (id !== null)? id: null);
     if (!this.body.email && !this.body.telefone) {
         this.errors.push('Pelo menos um contato precisa ser enviado: e-mail ou telefone.');

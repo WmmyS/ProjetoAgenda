@@ -1,5 +1,6 @@
 import validator from 'validator';
 import Alerta from './Alerta';
+import Mascara from './Mascara';
 
 export default class Contato {
     constructor(formClass) {
@@ -24,6 +25,7 @@ export default class Contato {
         const element = e.target;
         const emailContato = element.querySelector('input[name="email"]');
         const telefoneContato = element.querySelector('input[name="telefone"]');
+        console.log(telefoneContato);
 
         if (!this.errors.length > 0) element.submit();
     }
@@ -48,9 +50,9 @@ export default class Contato {
         })
 
         if(!telefone) return;
-        telefone.addEventListener('focusout', event => {
+        telefone.addEventListener('keydown', event => {
             // Validar telefone
-            this.validarTelefone(telefone);
+            this.validarTelefone('.input-telefone');
         })
 
         if(!email) return;
@@ -72,7 +74,7 @@ export default class Contato {
 
     validarTelefone(telefone) {
         if(!telefone) return;
-        console.log(telefone.value);
+        this.aplicarMascara(telefone);
     }
 
     validarEmail(email) {
@@ -84,6 +86,11 @@ export default class Contato {
         } else {
             alerta.removerAlerta(this.errors);
         }
+    }
+
+    aplicarMascara(telefone) {
+        const mascara = new Mascara(telefone);
+        mascara.aplicar();
     }
 
 }

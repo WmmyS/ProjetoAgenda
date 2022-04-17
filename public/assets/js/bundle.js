@@ -95,14 +95,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ Contato)
 /* harmony export */ });
-/* harmony import */ var validator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! validator */ "./node_modules/validator/index.js");
-/* harmony import */ var validator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(validator__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var validator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! validator */ "./node_modules/validator/index.js");
+/* harmony import */ var validator__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(validator__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _Alerta__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Alerta */ "./frontend/modules/Alerta.js");
+/* harmony import */ var _Mascara__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Mascara */ "./frontend/modules/Mascara.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
 
 
 
@@ -139,6 +141,8 @@ var Contato = /*#__PURE__*/function () {
       var element = e.target;
       var emailContato = element.querySelector('input[name="email"]');
       var telefoneContato = element.querySelector('input[name="telefone"]');
+      telefoneContato.value.replaceAll(/[()]/g, '').split();
+      console.log(telefoneContato);
       if (!this.errors.length > 0) element.submit();
     }
   }, {
@@ -162,9 +166,9 @@ var Contato = /*#__PURE__*/function () {
         _this2.validarSobrenome(sobrenome);
       });
       if (!telefone) return;
-      telefone.addEventListener('focusout', function (event) {
+      telefone.addEventListener('keydown', function (event) {
         // Validar telefone
-        _this2.validarTelefone(telefone);
+        _this2.validarTelefone('.input-telefone');
       });
       if (!email) return;
       email.addEventListener('focusout', function (event) {
@@ -188,7 +192,7 @@ var Contato = /*#__PURE__*/function () {
     key: "validarTelefone",
     value: function validarTelefone(telefone) {
       if (!telefone) return;
-      console.log(telefone.value);
+      this.aplicarMascara(telefone);
     }
   }, {
     key: "validarEmail",
@@ -196,11 +200,17 @@ var Contato = /*#__PURE__*/function () {
       if (!email) return;
       var alerta = new _Alerta__WEBPACK_IMPORTED_MODULE_0__["default"]('.form-input-email', 'Email inválido');
 
-      if (!validator__WEBPACK_IMPORTED_MODULE_1___default().isEmail(email.value)) {
+      if (!validator__WEBPACK_IMPORTED_MODULE_2___default().isEmail(email.value)) {
         alerta.inserirAlerta(this.errors);
       } else {
         alerta.removerAlerta(this.errors);
       }
+    }
+  }, {
+    key: "aplicarMascara",
+    value: function aplicarMascara(telefone) {
+      var mascara = new _Mascara__WEBPACK_IMPORTED_MODULE_1__["default"](telefone);
+      mascara.aplicar();
     }
   }]);
 
@@ -279,6 +289,58 @@ var Login = /*#__PURE__*/function () {
   }]);
 
   return Login;
+}();
+
+
+
+/***/ }),
+
+/***/ "./frontend/modules/Mascara.js":
+/*!*************************************!*\
+  !*** ./frontend/modules/Mascara.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Mascara)
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+var Mascara = /*#__PURE__*/function () {
+  function Mascara(telefone) {
+    _classCallCheck(this, Mascara);
+
+    this.telefone = telefone;
+  }
+
+  _createClass(Mascara, [{
+    key: "aplicar",
+    value: function aplicar() {
+      var valor = document.querySelector(this.telefone).attributes[0].ownerElement['value'];
+      var retorno = valor.replace(/\D/g, "");
+      retorno = retorno.replace(/^0/, "");
+
+      if (retorno.length > 11) {
+        retorno = retorno.replace(/^(\d\d)(\d{5})(\d{4}).*/, "($1) $2-$3");
+      } else if (retorno.length > 7) {
+        retorno = retorno.replace(/^(\d\d)(\d{5})(\d{0,4}).*/, "($1) $2-$3");
+      } else if (retorno.length > 2) {
+        retorno = retorno.replace(/^(\d\d)(\d{0,5})/, "($1) $2");
+      } else if (valor.trim() !== "") {
+        retorno = retorno.replace(/^(\d*)/, "($1");
+      }
+
+      document.querySelector(this.telefone).attributes[0].ownerElement['value'] = retorno;
+    }
+  }]);
+
+  return Mascara;
 }();
 
 
