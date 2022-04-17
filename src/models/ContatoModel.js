@@ -45,19 +45,49 @@ Contato.prototype.valida = async function(id) {
 }
 
 Contato.prototype.verificarEmail = async function(email, id) {
-    if (id !== null) return;
+    if (id !== null) {
+        const contatos = await ContatoModel.find({ email : email }).exec();
+
+        for(contato of contatos) {
+            if(!contato._id.equals(id)) {
+                this.errors.push('Existe um contato com esse e-mail já cadastrado');
+                return;
+            }
+        }
+        return;
+    };
     const exists = await ContatoModel.findOne({ email : email }).exec();    
-    if (exists !== null) this.errors.push('Existe um contato com esse E-mail já cadastrado');
+    if (exists !== null) this.errors.push('Existe um contato com esse e-mail já cadastrado');
 }
 
 Contato.prototype.verificarTelefone = async function(telefone, id) {
-    if (id !== null) return;
+    if (id !== null) {
+        const contatos = await ContatoModel.find({ telefone : telefone }).exec();
+
+        for(contato of contatos) {
+            if(!contato._id.equals(id)) {
+                this.errors.push('Existe um contato com esse telefone já cadastrado');
+                return;
+            }
+        }
+        return;
+    };
     const exists = await ContatoModel.findOne({ telefone : telefone }).exec();
     if (exists !== null) this.errors.push('Existe um contato com esse telefone já cadastrado');
 }
 
 Contato.prototype.verificarNomeCompleto = async function(nome, sobrenome, id) {
-    if (id !== null) return;
+    if (id !== null) {
+        const contatos = await ContatoModel.find({ nome : nome, sobrenome : sobrenome }).exec();
+
+        for(contato of contatos) {
+            if(!contato._id.equals(id)) {
+                this.errors.push('Existe um contato com esse nome e sobrenome');
+                return;
+            }
+        }
+        return;
+    };
     const exists = await ContatoModel.findOne({ nome : nome, sobrenome : sobrenome }).exec();
     if (exists !== null) this.errors.push('Existe um contato com esse nome e sobrenome');
 }
@@ -80,8 +110,8 @@ Contato.prototype.cleanUp = function() {
 
 Contato.prototype.edit = async function(id) {
     if(typeof id !== 'string') return;
-    this.valida(id);
-    if(this.errors.lenght > 0) return;
+    await this.valida(id);
+    if(this.errors.length > 0) return;
     this.contato = await ContatoModel.findByIdAndUpdate(id, this.body, { new: true });
 }
 

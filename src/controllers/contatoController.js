@@ -42,7 +42,7 @@ exports.edit = async function(req, res) {
 
         if(contato.errors.length > 0) {
             req.flash('errors', contato.errors);
-            req.session.save(() => res.redirect(`/contato/index/${contato.contato._id}`));
+            req.session.save(() => res.redirect('back'));
             return;
         }
 
