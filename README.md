@@ -52,8 +52,3 @@ Iniciar a aplicação com o comando:
 
 ``` npm start ```
   
-## **Existe uma aplicação em execução pelo servidor Heroku pelo link:
-  
-  https://agenda-simple-application.herokuapp.com/
-  
-
